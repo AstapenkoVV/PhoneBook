@@ -6,7 +6,7 @@ import easygui
 def search_contact():
     try:
         name = easygui.enterbox("Введите имя для поиска:").lower()
-        with open("contants.json", "w", encoding="utf-8") as book:
+        with open("contacts.json", "w", encoding="utf-8") as book:
             reader = json.reader(book)
             rows = list(reader)
             found = False
@@ -23,12 +23,13 @@ def search_contact():
 
 
 # Функция для добавления новой записи в телефоный справочник
-def create_contact():
+
 
 
 
 
 # Тело программы
+
 while True:
     choice = easygui.buttonbox("Выберите действие с телефонной книгой:",
                                choices=["Найти контакт",
