@@ -1,4 +1,4 @@
-import json
+import csv
 import easygui
 
 
@@ -6,8 +6,8 @@ import easygui
 def search_contact():
     try:
         name = easygui.enterbox("Введите имя для поиска:").lower()
-        with open("contacts.json", "w", encoding="utf-8") as book:
-            reader = json.reader(book)
+        with open("contacts.csv", "r", encoding="utf-8") as book:
+            reader = csv.reader(book)
             rows = list(reader)
             found = False
             for row in rows:
@@ -23,6 +23,15 @@ def search_contact():
 
 
 # Функция для добавления новой записи в телефоный справочник
+def create_contact():
+    name = easygui.enterbox("Введите имя: ").lower()
+    phone = easygui.enterbox("Введите номер телефона: ")
+    with open("contacts.csv", "a", encoding="utf-8") as book:
+        create = csv.writer(book)
+        create.writerow([name, phone])
+    easygui.msgbox("Новая запись добавленна в телефонную книгу")
+
+
 
 
 
