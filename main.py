@@ -4,16 +4,16 @@ import easygui
 
 # Функция для поиска записи в телефонном справочнике
 def search_contact():
-    try:
-        name = easygui.enterbox("Введите имя для поиска:").lower()
-        with open("contacts.csv", "r", encoding="utf-8") as book:
+     try:
+        name = easygui.enterbox("Введите имя контакта для поиска:").lower()
+        with open("contacts.csv", "r", encoding="windows-1251") as book:
             reader = csv.reader(book)
             rows = list(reader)
             found = False
             for row in rows:
                 # Сравнение имени без учета регистра
                 if row[0].lower() == name:
-                    easygui.msgbox(f"Найдена запись: Имя - {row[0]}, Телефон - {row[1]}")
+                    easygui.msgbox(f"Найдена запись: Имя: {row[0]}, Телефон: {row[1]}")
                     found = True
                     break
             if not found:
@@ -24,17 +24,34 @@ def search_contact():
 
 # Функция для добавления новой записи в телефоный справочник
 def create_contact():
-    name = easygui.enterbox("Введите имя: ").lower()
+    name = easygui.enterbox("Введите имя контакта: ").lower()
     phone = easygui.enterbox("Введите номер телефона: ")
-    with open("contacts.csv", "a", encoding="utf-8") as book:
+    with open("contacts.csv", "a", newline='') as book:
         create = csv.writer(book)
         create.writerow([name, phone])
-    easygui.msgbox("Новая запись добавленна в телефонную книгу")
+        easygui.msgbox(f"Новая запись {name}: {phone} добавленна в телефонную книгу")
 
 
+# Функция удаления записи из телефонного справочника
+def delete_contact():
 
-
-
+    name = easygui.enterbox("Введите имя контакта: ").lower()
+    with open('contacts.csv', 'r', encoding="windows-1251") as book:
+        reader = csv.reader(book)
+        rows = list(reader)
+        found = False
+        for row in rows:
+            if row[0] == name:
+                rows.remove(row)
+                found = True
+                break
+        if found:
+            with open('contacts.csv', 'w', newline='') as book:
+                writer = csv.writer(book)
+                writer.writerows(rows)
+                easygui.msgbox(f"Запись {name} удалена из телефонного справочника.")
+        else:
+            easygui.msgbox(f"Запись {name} не найдена в телефонном справочнике.")
 
 
 # Тело программы
@@ -48,13 +65,13 @@ while True:
                                         "Выход"])
 
     # Выполняем действия
-    if choice == "Найти контакт":
-        search_contact()
-    elif choice == "Добавить новый контакт":
+    if choice == "Добавить новый контакт":
         create_contact()
     elif choice == "Удалить имеющуюся контакт":
         delete_contact()
     elif choice == "Редактировать контакт":
         edit_contact()
+    elif choice == "Найти контакт":
+        search_contact()
     elif choice == "Выход":
         break
